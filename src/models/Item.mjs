@@ -5,8 +5,8 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price: {
-    type: Number,
+  kodeBarang: {
+    type: String,
     required: true,
   },
   quantity: {
@@ -22,7 +22,7 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  ukuranKemasan: {
     type: String,
   },
   date: {

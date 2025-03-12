@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # Mengabaikan file .env
 .env
 
 # Mengabaikan folder node_modules
+=======
+.env
+>>>>>>> master
 node_modules/
