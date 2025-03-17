@@ -1,6 +1,6 @@
-## Documentasi API
+# Documentasi API
 
-# Endpoint untuk Produk
+## Endpoint untuk Produk
 - **GET** `/api/items` : Melihat Seluruh Produk
 - **GET** `/api/items/:id` : Melihat Satu Produk
 - **POST** `/api/items` : Menambahkan Produk
@@ -9,6 +9,7 @@
 - **DELETE** `/api/items/:id` : Delete product by id
 - **PUT** `/api/items/:id/add-quantity` : Update product by id
 - **PUT** `/api/items/:id/subtract-quantity` : Update product by id
+- Request Body form-data : { "quantity": Text, }
 
 ## Endpoint untuk User
 - **POST** `/api/users/register` : Register User
