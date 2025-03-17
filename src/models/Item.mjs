@@ -25,10 +25,6 @@ const itemSchema = new mongoose.Schema({
   ukuranKemasan: {
     type: String,
   },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 export default mongoose.model("Item", itemSchema);

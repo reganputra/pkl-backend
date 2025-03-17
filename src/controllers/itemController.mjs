@@ -1,4 +1,5 @@
 import Item from "../models/Item.mjs";
+import Riwayat from "../models/Riwayat.mjs";
 import fs from "fs";
 import path from "path";
 
@@ -77,8 +78,7 @@ const deleteItem = async (req, res) => {
   }
 };
 
-// Fungsi untuk menambahkan kuantitas barang
-const addQuantity = async (req, res) => {
+const updateQuantity = async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;
@@ -86,33 +86,27 @@ const addQuantity = async (req, res) => {
     const item = await Item.findById(id);
     if (!item) return res.status(404).json({ message: "Item not found" });
 
-    item.quantity += quantity;
-    await item.save();
-    res.status(200).json(item);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Fungsi untuk mengurangi kuantitas barang
-const subtractQuantity = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { quantity } = req.body;
-
-    const item = await Item.findById(id);
-    if (!item) return res.status(404).json({ message: "Item not found" });
-
-    if (item.quantity < quantity) {
+    if (quantity < 0 && item.quantity < Math.abs(quantity)) {
       return res.status(400).json({ message: "Insufficient quantity" });
     }
 
-    item.quantity -= quantity;
+    item.quantity += quantity;
     await item.save();
+
+    // Tentukan status berdasarkan nilai quantity
+    const status = quantity > 0 ? "barang masuk" : "barang keluar";
+
+    // Simpan riwayat perubahan
+    const riwayat = new Riwayat({
+      kodeBarang: item.kodeBarang,
+      quantity: Math.abs(quantity),
+      status,
+    });
+    await riwayat.save();
     res.status(200).json(item);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export { createItem, getAllItems, getItemById, updateItem, deleteItem, addQuantity, subtractQuantity };
+export { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity };
