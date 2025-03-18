@@ -1,13 +1,11 @@
 import Item from "../models/Item.mjs";
 import Riwayat from "../models/Riwayat.mjs";
-import fs from "fs";
-import path from "path";
 
-// Create Item
+// Fungsi untuk membuat item baru
 const createItem = async (req, res) => {
   try {
     const { name, kodeBarang, quantity, category, ukuranKemasan } = req.body;
-    const image = req.file ? req.file.filename : "";
+    const image = req.file ? req.file.url : "";
 
     const newItem = new Item({
       name,
@@ -19,38 +17,25 @@ const createItem = async (req, res) => {
     });
     await newItem.save();
 
+    const riwayat = new Riwayat({
+      kodeBarang: newItem._id,
+      quantity: quantity,
+      status: "barang masuk",
+    });
+    await riwayat.save();
+
     res.status(201).json(newItem);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get All Items
-const getAllItems = async (req, res) => {
-  try {
-    const items = await Item.find();
-    res.status(200).json(items);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Get Item by ID
-const getItemById = async (req, res) => {
-  try {
-    const item = await Item.findById(req.params.id);
-    if (!item) return res.status(404).json({ message: "Item not found" });
-    res.status(200).json(item);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Update Item
+// Fungsi untuk memperbarui item
 const updateItem = async (req, res) => {
   try {
+    const { id } = req.params;
     const { name, kodeBarang, quantity, category, ukuranKemasan } = req.body;
-    const item = await Item.findById(req.params.id);
+    const item = await Item.findById(id);
 
     if (!item) return res.status(404).json({ message: "Item not found" });
 
@@ -61,30 +46,54 @@ const updateItem = async (req, res) => {
     item.ukuranKemasan = ukuranKemasan || item.ukuranKemasan;
 
     if (req.file) {
-      item.image = req.file.filename;
+      item.image = req.file.url;
     }
 
     await item.save();
+
     res.status(200).json(item);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Delete Item
-const deleteItem = async (req, res) => {
+// Fungsi untuk mendapatkan semua item
+const getAllItems = async (req, res) => {
   try {
-    const item = await Item.findByIdAndDelete(req.params.id);
+    const items = await Item.find();
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Fungsi untuk mendapatkan item berdasarkan ID
+const getItemById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await Item.findById(id);
     if (!item) return res.status(404).json({ message: "Item not found" });
 
-    // Hapus gambar terkait
-    if (item.imageUrl) fs.unlinkSync(item.imageUrl);
+    res.status(200).json(item);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Fungsi untuk menghapus item
+const deleteItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await Item.findByIdAndDelete(id);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
     res.status(200).json({ message: "Item deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+// Fungsi untuk memperbarui kuantitas barang
 const updateQuantity = async (req, res) => {
   try {
     const { id } = req.params;
@@ -110,6 +119,7 @@ const updateQuantity = async (req, res) => {
       status,
     });
     await riwayat.save();
+
     res.status(200).json(item);
   } catch (error) {
     res.status(500).json({ message: error.message });
