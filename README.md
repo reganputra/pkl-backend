@@ -2,14 +2,14 @@
 
 ## Endpoint untuk Produk
 - **GET** `/api/items` : Melihat Seluruh Produk
-- **GET** `/api/items/:id` : Melihat Satu Produk
+- **GET** `/api/items/:id` : Melihat Satu Produk berdasarkan kode barang
 - **POST** `/api/items` : Menambahkan Produk
 - Request Body form-data : { "name": Text, "kodeBarang": Text, "quantity": Text, "category": Text, "image": File, "ukuranKemasan": Text, }
 - **PUT** `/api/items/:id` : Mengedit Produk
 - **DELETE** `/api/items/:id` : Delete product by id
-- **PUT** `/api/items/:id/add-quantity` : Update product by id
-- **PUT** `/api/items/:id/subtract-quantity` : Update product by id
-- Request Body form-data : { "quantity": Text, }
+- **PATCH** `/api/items/:id/add-quantity` : Update product by id
+- **PATCH** `/api/items/:id/subtract-quantity` : Update product by id
+- Request Body form-data : { "quantity": Integer, }
 
 ## Endpoint untuk User
 - **POST** `/api/users/register` : Register User
