@@ -7,7 +7,14 @@ const createItem = async (req, res) => {
     const { name, kodeBarang, quantity, category, ukuranKemasan } = req.body;
     const image = req.file ? req.file.url : "";
 
-    const newItem = new Item({ name, kodeBarang, quantity, category, image, ukuranKemasan });
+    const newItem = new Item({
+      name,
+      kodeBarang,
+      quantity,
+      category,
+      image,
+      ukuranKemasan,
+    });
     await newItem.save();
 
     const riwayat = new Riwayat({
@@ -119,4 +126,11 @@ const updateQuantity = async (req, res) => {
   }
 };
 
-export { createItem, updateItem, getAllItems, getItemById, deleteItem, updateQuantity };
+export {
+  createItem,
+  getAllItems,
+  getItemById,
+  updateItem,
+  deleteItem,
+  updateQuantity,
+};
