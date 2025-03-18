@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./src/config/db.mjs";
 import itemRoutes from "./src/routes/itemRoutes.mjs";
 import userRoutes from "./src/routes/userRoutes.mjs";
+import riwayatRoutes from "./src/routes/riwayatRoutes.mjs";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -35,6 +36,7 @@ app.use("/uploads", express.static("uploads"));
 // Routes
 app.use("/api/items", itemRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/riwayat", riwayatRoutes);
 
 // Start Server
 connectDB()

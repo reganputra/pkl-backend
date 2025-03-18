@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const riwayatSchema = new mongoose.Schema({
   kodeBarang: {
-    type: mongoose.Schema.Types.String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Item",
     required: true,
   },

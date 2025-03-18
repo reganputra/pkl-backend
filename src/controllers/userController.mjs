@@ -18,15 +18,19 @@ const registerUser = async (req, res) => {
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
+    // Return a 400 response if the user already exists
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+  // Create a new user with the provided details
 };
 
 // Login user
 const loginUser = async (req, res) => {
+  // Send a 201 response indicating successful registration
   try {
     const { email, password } = req.body;
+    // Send a 500 response in case of any server error
 
     // Check if user exists
     const user = await User.findOne({ email });

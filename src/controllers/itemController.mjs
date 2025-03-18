@@ -98,7 +98,7 @@ const updateQuantity = async (req, res) => {
 
     // Simpan riwayat perubahan
     const riwayat = new Riwayat({
-      kodeBarang: item.kodeBarang,
+      kodeBarang: item._id,
       quantity: Math.abs(quantity),
       status,
     });
