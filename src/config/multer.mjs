@@ -1,20 +1,29 @@
-import path from "path";
 import multer from "multer";
-import { fileURLToPath } from "url";
+import imagekit from "./imagekitConfig.mjs";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const uploadsDir = path.join(__dirname, "../../uploads");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Nama file unik
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-export default upload;
+const uploadToImageKit = async (req, res, next) => {
+  if (!req.file) {
+    return next();
+  }
+
+  const file = req.file;
+  const fileName = Date.now().toString() + "-" + file.originalname;
+
+  try {
+    const result = await imagekit.upload({
+      file: file.buffer, // required
+      fileName: fileName, // required
+      folder: "/uploads/",
+    });
+
+    req.file.url = result.url;
+    next();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { upload, uploadToImageKit };

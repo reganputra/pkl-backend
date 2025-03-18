@@ -1,5 +1,6 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import express from "express";
 import cors from "cors";
 import connectDB from "./src/config/db.mjs";
 import itemRoutes from "./src/routes/itemRoutes.mjs";
@@ -8,8 +9,6 @@ import riwayatRoutes from "./src/routes/riwayatRoutes.mjs";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
