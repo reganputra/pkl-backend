@@ -1,28 +1,8 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import connectDB from "./src/config/db.mjs";
-import itemRoutes from "./src/routes/itemRoutes.mjs";
-import userRoutes from "./src/routes/userRoutes.mjs";
-import riwayatRoutes from "./src/routes/riwayatRoutes.mjs";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const uploadsDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  try {
-    fs.mkdirSync(uploadsDir);
-    console.log(`Created uploads directory at ${uploadsDir}`);
-  } catch (err) {
-    console.error(`Error creating uploads directory: ${err.message}`);
-  }
-} else {
-  console.log(`Uploads directory already exists at ${uploadsDir}`);
-}
+import router from "./src/routes/index.mjs";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,9 +13,7 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 // Routes
-app.use("/api/items", itemRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/riwayat", riwayatRoutes);
+app.use("/api", router);
 
 // Start Server
 connectDB()

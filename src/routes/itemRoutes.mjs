@@ -1,13 +1,24 @@
 import express from "express";
-const router = express.Router();
 import { upload, uploadToImageKit } from "../config/multer.mjs";
-import { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity } from "../controllers/itemController.mjs";
+import * as itemController from "../controllers/itemController.mjs";
 
-router.post("/", upload.single("image"), uploadToImageKit, createItem);
-router.get("/", getAllItems);
-router.get("/:id", getItemById);
-router.put("/:id", upload.single("image"), uploadToImageKit, updateItem);
-router.delete("/:id", deleteItem);
-router.patch("/:id/update-quantity", updateQuantity);
+const router = express.Router();
+
+router.post(
+  "/",
+  upload.single("image"),
+  uploadToImageKit,
+  itemController.createItem
+);
+router.put(
+  "/:id",
+  upload.single("image"),
+  uploadToImageKit,
+  itemController.updateItem
+);
+router.get("/", itemController.getAllItems);
+router.get("/:id", itemController.getItemById);
+router.delete("/:id", itemController.deleteItem);
+router.patch("/:id/update-quantity", itemController.updateQuantity);
 
 export default router;
