@@ -7,7 +7,6 @@
 - Request Body form-data : { "name": Text, "kodeBarang": Text, "quantity": Text, "category": Text, "image": File, "ukuranKemasan": Text, }
 - **PUT** `/api/items/:id` : Mengedit Produk
 - **DELETE** `/api/items/:id` : Delete product by id
-- **PATCH** `/api/items/:id/add-quantity` : Update product by id
 - **PATCH** `/api/items/:id/subtract-quantity` : Update product by id
 - Request Body form-data : { "quantity": Integer, }
 
