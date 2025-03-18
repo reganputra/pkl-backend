@@ -16,17 +16,25 @@ router.get("/", async (req, res) => {
 router.get("/:year/:month", async (req, res) => {
   try {
     const { year, month } = req.params;
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
-    const riwayat = await Riwayat.find({
-      date: {
-        $gte: startDate,
-        $lte: endDate,
-      },
-    }).populate("kodeBarang", "kodeBarang name");
+    const rawData = await Riwayat.find({ month, year }).populate(
+      "kodeBarang",
+      "kodeBarang name"
+    );
 
-    res.status(200).json(riwayat);
+    const groupedData = rawData.reduce((acc, item) => {
+      if (!acc[item.day]) {
+        acc[item.day] = [];
+      }
+      acc[item.day].push(item);
+      return acc;
+    }, {});
+
+    const result = Object.entries(groupedData)
+      .sort(([a], [b]) => Number(a) - Number(b))
+      .map(([day, records]) => ({ day, records }));
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

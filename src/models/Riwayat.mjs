@@ -15,17 +15,18 @@ const riwayatSchema = new mongoose.Schema({
     enum: ["barang masuk", "barang keluar"],
     required: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  day: {
+    type: String,
+    default: () => new Date().toISOString().split("T")[0].split("-")[2],
   },
-});
-
-riwayatSchema.pre("save", function (next) {
-  const date = new Date(this.date);
-  date.setHours(0, 0, 0, 0);
-  this.date = date;
-  next();
+  month: {
+    type: String,
+    default: () => new Date().toISOString().split("T")[0].split("-")[1],
+  },
+  year: {
+    type: String,
+    default: () => new Date().toISOString().split("T")[0].split("-")[0],
+  },
 });
 
 export default mongoose.model("Riwayat", riwayatSchema);
