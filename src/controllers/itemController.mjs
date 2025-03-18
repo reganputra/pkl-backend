@@ -9,7 +9,14 @@ const createItem = async (req, res) => {
     const { name, kodeBarang, quantity, category, ukuranKemasan } = req.body;
     const image = req.file ? req.file.filename : "";
 
-    const newItem = new Item({ name, kodeBarang, quantity, category, image, ukuranKemasan });
+    const newItem = new Item({
+      name,
+      kodeBarang,
+      quantity,
+      category,
+      image,
+      ukuranKemasan,
+    });
     await newItem.save();
 
     res.status(201).json(newItem);
@@ -109,4 +116,11 @@ const updateQuantity = async (req, res) => {
   }
 };
 
-export { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity };
+export {
+  createItem,
+  getAllItems,
+  getItemById,
+  updateItem,
+  deleteItem,
+  updateQuantity,
+};
