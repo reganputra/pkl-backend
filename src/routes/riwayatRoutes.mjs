@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import Riwayat from "../models/Riwayat.mjs";
 
-// Rute untuk mendapatkan semua riwayat perubahan
+// Rute untuk mendapatkan semua riwayat
 router.get("/", async (req, res) => {
   try {
     const riwayat = await Riwayat.find().populate("kodeBarang");
