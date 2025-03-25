@@ -12,7 +12,6 @@
 - Request Body form-data : { "quantity": Integer, }
 
 ## Endpoint untuk User
-
 - **POST** `/api/users/register` : Register User
 - Request Body form-data : { "username": Text, "email": Text, "password": Text,}
 - **POST** `/api/users/login` : Login User
