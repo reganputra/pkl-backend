@@ -25,9 +25,11 @@
 ## Endpoint untuk PO
 
 - **POST** `/api/po/` : Pembuatan PO otomatis tanpa inputan user
+- **GET** `/api/po/` : Melihat semua PO
 
 ## Endpoint untuk surat jalan
 
 - **POST** `api/surat-jalan` : untuk membuat surat jalan pastikan kalian inputin atribut noSuratJalan harus sama dengan nomorPO yang ada di database kalau tidak pasti error dan noSuratJalan ini aku stel tidak bisa sama satu sama lain jadi kalau kalian masukin noSuratJalan yang sama akan ada pesan error
 - Request Body form-data : {"noSuratJalan" : Text}
+- **GET** `api/surat-jalan` : untuk melihat semua surat jalan
 
