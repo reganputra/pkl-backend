@@ -1,4 +1,4 @@
-import SuratJalan from "../models/Suratjalan.mjs";
+import Surat from "../models/SuratJalan.mjs";
 import PO from "../models/PO.mjs";
 
 // Fungsi untuk membuat surat jalan baru
@@ -6,7 +6,7 @@ const createSuratJalan = async (req, res) => {
   try {
     const { noSuratJalan } = req.body;
     // Periksa apakah nomor surat jalan sudah ada
-    const existingSuratJalan = await SuratJalan.findOne({ noSuratJalan });
+    const existingSuratJalan = await Surat.findOne({ noSuratJalan });
     if (existingSuratJalan) {
       return res.status(400).json({ message: "Nomor surat jalan sudah ada" });
     }
@@ -21,7 +21,7 @@ const createSuratJalan = async (req, res) => {
     }
 
     // Buat surat jalan baru
-    const newSuratJalan = new SuratJalan({ noSuratJalan });
+    const newSuratJalan = new Surat({ noSuratJalan });
     await newSuratJalan.save();
 
     // Perbarui status PO menjadi delivered
@@ -37,7 +37,7 @@ const createSuratJalan = async (req, res) => {
 // Fungsi untuk mendapatkan semua surat jalan
 const getAllSuratJalan = async (req, res) => {
   try {
-    const suratJalans = await SuratJalan.find();
+    const suratJalans = await Surat.find();
     res.status(200).json(suratJalans);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -48,7 +48,7 @@ const getAllSuratJalan = async (req, res) => {
 const getSuratJalanById = async (req, res) => {
   try {
     const { id } = req.params;
-    const suratJalan = await SuratJalan.findById(id);
+    const suratJalan = await suratJalan.findById(id);
     if (!suratJalan) return res.status(404).json({ message: "Surat Jalan not found" });
 
     res.status(200).json(suratJalan);
@@ -61,7 +61,7 @@ const getSuratJalanById = async (req, res) => {
 const deleteSuratJalan = async (req, res) => {
   try {
     const { id } = req.params;
-    const suratJalan = await SuratJalan.findByIdAndDelete(id);
+    const suratJalan = await suratJalan.findByIdAndDelete(id);
     if (!suratJalan) return res.status(404).json({ message: "Surat Jalan not found" });
 
     res.status(200).json({ message: "Surat Jalan deleted successfully" });
