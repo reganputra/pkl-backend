@@ -22,3 +22,17 @@
 
 - **GET** `/api/riwayat/` : getAll riwayat
 - **GET** `/api/riwayat/year/month` : get riwayat base on month and year
+
+## Endpoint untuk PO
+
+- **POST** `api/po` : to make automatic PO
+- **GET** `api/po/status/pending` : to get PO that the status is pending
+- **GET** `api/po/status/sending` : to get PO that the status is sending
+- **GET** `api/po/status/delivered` : to get PO that the status is delivered
+
+## Endpoint untuk Surat Jalan
+
+- **POST** : `api/surat-jalan` : to create surat jalan and change status of PO become delivered
+- Request Body form-data : {
+  "noSuratJalan" : Text
+  }
