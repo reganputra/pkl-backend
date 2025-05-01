@@ -1,5 +1,7 @@
 # Documentasi API
 
+# Penting untuk mengakses semua API selain users perlu gunakan token yo kalau di postman ada di headers gitu oke itu aja semangat
+
 ## Endpoint untuk Produk
 
 - **GET** `/api/items` : Melihat Seluruh Produk
