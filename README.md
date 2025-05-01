@@ -12,6 +12,7 @@
 - Request Body form-data : { "quantity": Integer, }
 
 ## Endpoint untuk User
+
 - **POST** `/api/users/register` : Register User
 - Request Body form-data : { "username": Text, "email": Text, "password": Text,}
 - **POST** `/api/users/login` : Login User
@@ -21,3 +22,11 @@
 
 - **GET** `/api/riwayat/` : getAll riwayat
 - **GET** `/api/riwayat/year/month` : get riwayat base on month and year
+
+## Endpoint untuk PO
+
+- **POST** `/api/po/` : Pembuatan PO otomatis tanpa inputan user
+
+## Endpoint untuk surat jalan
+
+- **POST** `api/surat-jalan` : untuk membuat surat jalan pastikan kalian inputin atribut noSuratJalan harus sama dengan nomorPO yang ada di database kalau tidak pasti error dan noSuratJalan ini aku stel tidak bisa sama satu sama lain jadi kalau kalian masukin noSuratJalan yang sama akan ada pesan error

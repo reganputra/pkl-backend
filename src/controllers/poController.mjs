@@ -90,4 +90,59 @@ const deletePO = async (req, res) => {
   }
 };
 
-export { createAutoPO, getAllPOs, getPOById, updatePO, deletePO };
+// Fungsi untuk mengupdate status PO menjadi "sending" jika sudah H+1 dari waktu PO dibuat
+const updatePOStatusToSending = async () => {
+  try {
+    const currentDate = new Date(); // Tanggal saat ini
+
+    // Cari semua PO dengan status "pending"
+    const pendingPOs = await PO.find({ status: "pending" });
+
+    // Iterasi setiap PO untuk memeriksa apakah sudah H+1
+    for (const po of pendingPOs) {
+      const poDate = new Date(po.date); // Tanggal PO dibuat
+      const diffInDays = Math.floor((currentDate - poDate) / (1000 * 60 * 60 * 24)); // Selisih hari
+
+      if (diffInDays >= 1) {
+        po.status = "sending"; // Update status menjadi "sending"
+        await po.save(); // Simpan perubahan
+      }
+    }
+
+    console.log("PO statuses updated to 'sending' where applicable.");
+  } catch (error) {
+    console.error("Error updating PO statuses:", error.message);
+  }
+};
+
+// Fungsi untuk mendapatkan PO dengan status "pending"
+const getPendingPOs = async (req, res) => {
+  try {
+    const pos = await PO.find({ status: "pending" }).populate("barang");
+    res.status(200).json(pos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Fungsi untuk mendapatkan PO dengan status "sending"
+const getSendingPOs = async (req, res) => {
+  try {
+    const pos = await PO.find({ status: "sending" }).populate("barang");
+    res.status(200).json(pos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Fungsi untuk mendapatkan PO dengan status "delivered"
+const getDeliveredPOs = async (req, res) => {
+  try {
+    const pos = await PO.find({ status: "delivered" }).populate("barang");
+    res.status(200).json(pos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { createAutoPO, getAllPOs, getPOById, updatePO, deletePO, updatePOStatusToSending, getPendingPOs, getSendingPOs, getDeliveredPOs };
