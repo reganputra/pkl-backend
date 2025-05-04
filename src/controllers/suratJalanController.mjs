@@ -48,11 +48,12 @@ const getAllSuratJalan = async (req, res) => {
 const getSuratJalanById = async (req, res) => {
   try {
     const { id } = req.params;
-    const suratJalan = await suratJalan.findById(id);
+    const suratJalan = await Surat.findById(id); // Gunakan 'Surat' sebagai model
     if (!suratJalan) return res.status(404).json({ message: "Surat Jalan not found" });
 
     res.status(200).json(suratJalan);
   } catch (error) {
+    console.error(error); // Tambahkan logging
     res.status(500).json({ message: error.message });
   }
 };
@@ -61,11 +62,12 @@ const getSuratJalanById = async (req, res) => {
 const deleteSuratJalan = async (req, res) => {
   try {
     const { id } = req.params;
-    const suratJalan = await suratJalan.findByIdAndDelete(id);
+    const suratJalan = await Surat.findByIdAndDelete(id); // Gunakan 'Surat' sebagai model
     if (!suratJalan) return res.status(404).json({ message: "Surat Jalan not found" });
 
     res.status(200).json({ message: "Surat Jalan deleted successfully" });
   } catch (error) {
+    console.error(error); // Tambahkan logging
     res.status(500).json({ message: error.message });
   }
 };

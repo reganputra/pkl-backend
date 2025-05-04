@@ -18,8 +18,12 @@ const createItem = async (req, res) => {
     await newItem.save();
 
     const riwayat = new Riwayat({
-      kodeBarang: newItem._id,
       quantity: quantity,
+      name: newItem.name,
+      kodeBarang: newItem.kodeBarang,
+      category: newItem.category,
+      image: newItem.image,
+      ukuranKemasan: newItem.ukuranKemasan,
       status: "barang masuk",
     });
     await riwayat.save();
@@ -114,7 +118,11 @@ const updateQuantity = async (req, res) => {
 
     // Simpan riwayat perubahan
     const riwayat = new Riwayat({
-      kodeBarang: item._id,
+      name: item.name,
+      kodeBarang: item.kodeBarang,
+      category: item.category,
+      image: item.image,
+      ukuranKemasan: item.ukuranKemasan,
       quantity: Math.abs(quantity),
       status,
     });
@@ -126,11 +134,4 @@ const updateQuantity = async (req, res) => {
   }
 };
 
-export {
-  createItem,
-  getAllItems,
-  getItemById,
-  updateItem,
-  deleteItem,
-  updateQuantity,
-};
+export { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity };

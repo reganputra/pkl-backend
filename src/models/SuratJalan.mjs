@@ -12,4 +12,4 @@ const suratjalanSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("SuratJalan", suratjalanSchema);
+export default mongoose.model("Suratjalan", suratjalanSchema);

@@ -2,7 +2,7 @@ import Riwayat from "../models/Riwayat.mjs";
 
 const getAllRiwayat = async (req, res) => {
   try {
-    const riwayat = await Riwayat.find().populate("kodeBarang");
+    const riwayat = await Riwayat.find();
     res.status(200).json(riwayat);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -11,26 +11,15 @@ const getAllRiwayat = async (req, res) => {
 
 const getRiwayatByYearMonth = async (req, res) => {
   try {
-    const { year, month } = req.params;
+    let { year, month } = req.params;
 
-    const rawData = await Riwayat.find({ month, year }).populate(
-      "kodeBarang",
-      "kodeBarang name"
-    );
+    // Pastikan year dan month dalam bentuk string
+    year = String(year);
+    month = String(month).padStart(2, "0");
 
-    const groupedData = rawData.reduce((acc, item) => {
-      if (!acc[item.day]) {
-        acc[item.day] = [];
-      }
-      acc[item.day].push(item);
-      return acc;
-    }, {});
+    const riwayat = await Riwayat.find({ year, month });
 
-    const result = Object.entries(groupedData)
-      .sort(([a], [b]) => Number(a) - Number(b))
-      .map(([day, records]) => ({ day, records }));
-
-    res.status(200).json(result);
+    res.status(200).json(riwayat);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

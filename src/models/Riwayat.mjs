@@ -1,10 +1,24 @@
 import mongoose from "mongoose";
 
 const riwayatSchema = new mongoose.Schema({
-  kodeBarang: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Item",
+  name: {
+    type: String,
     required: true,
+  },
+  kodeBarang: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  ukuranKemasan: {
+    type: String,
   },
   quantity: {
     type: Number,
