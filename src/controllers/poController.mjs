@@ -127,11 +127,9 @@ const deletePO = async (req, res) => {
   }
 };
 
-// Fungsi untuk langsung mengupdate semua status PO yang "pending" menjadi "sending"
-// Fungsi untuk mengupdate status PO menjadi "sending" berdasarkan nomorPO
 const updatePOStatusToSending = async (req, res) => {
   try {
-    const { nomorPO } = req.params; // Ambil nomorPO dari parameter URL
+    const { nomorPO } = req.params;
     console.log("nomorPO : ", nomorPO);
     // Cari PO berdasarkan nomorPO
     const po = await PO.findOne({ nomorPO });
@@ -140,7 +138,6 @@ const updatePOStatusToSending = async (req, res) => {
       return res.status(404).json({ message: "PO not found" });
     }
 
-    // Perbarui status PO menjadi "sending"
     po.status = "sending";
     await po.save();
 
@@ -153,8 +150,17 @@ const updatePOStatusToSending = async (req, res) => {
 // Fungsi untuk mendapatkan PO dengan status "pending"
 const getPendingPOs = async (req, res) => {
   try {
-    const pos = await PO.find({ status: "pending" }).populate("barang");
-    res.status(200).json(pos);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const pos = await PO.find({ status: "pending" }).skip(skip).limit(limit);
+    const total = await PO.countDocuments({ status: "pending" });
+    res.status(200).json({
+      data: pos,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -163,8 +169,17 @@ const getPendingPOs = async (req, res) => {
 // Fungsi untuk mendapatkan PO dengan status "sending"
 const getSendingPOs = async (req, res) => {
   try {
-    const pos = await PO.find({ status: "sending" }).populate("barang");
-    res.status(200).json(pos);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const pos = await PO.find({ status: "sending" }).skip(skip).limit(limit);
+    const total = await PO.countDocuments({ status: "sending" });
+    res.status(200).json({
+      data: pos,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -173,8 +188,17 @@ const getSendingPOs = async (req, res) => {
 // Fungsi untuk mendapatkan PO dengan status "delivered"
 const getDeliveredPOs = async (req, res) => {
   try {
-    const pos = await PO.find({ status: "delivered" }).populate("barang");
-    res.status(200).json(pos);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const pos = await PO.find({ status: "delivered" }).skip(skip).limit(limit);
+    const total = await PO.countDocuments({ status: "delivered" });
+    res.status(200).json({
+      data: pos,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
