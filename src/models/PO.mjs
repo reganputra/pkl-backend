@@ -6,9 +6,24 @@ const poSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  barang: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Item",
+  itemName: {
+    type: String,
+    required: true,
+  },
+  itemKodeBarang: {
+    type: String,
+    required: true,
+  },
+  itemCategory: {
+    type: String,
+    required: true,
+  },
+  itemImage: {
+    type: String,
+    required: true,
+  },
+  itemUkuranKemasan: {
+    type: String,
     required: true,
   },
   quantity: {
@@ -17,7 +32,7 @@ const poSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "shipped", "delivered", "cancelled"],
+    enum: ["pending", "sending", "delivered", "cancelled"],
     default: "pending",
   },
   date: {

@@ -64,8 +64,20 @@ const updateItem = async (req, res) => {
 // Fungsi untuk mendapatkan semua item
 const getAllItems = async (req, res) => {
   try {
-    const items = await Item.find();
-    res.status(200).json(items);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const items = await Item.find().skip(skip).limit(limit);
+
+    const total = await Item.countDocuments();
+
+    res.status(200).json({
+      data: items,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -134,4 +146,23 @@ const updateQuantity = async (req, res) => {
   }
 };
 
-export { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity };
+// Fungsi untuk mengupdate status PO menjadi "sending" berdasarkan nomorPO
+const updatePOStatusToSending = async (req, res) => {
+  try {
+    const { nomorPO } = req.params; // Ambil nomorPO dari parameter URL
+
+    // Cari PO berdasarkan nomorPO
+    const po = await PO.findOne({ nomorPO });
+    if (!po) return res.status(404).json({ message: "PO not found" });
+
+    // Perbarui status PO menjadi "sending"
+    po.status = "sending";
+    await po.save();
+
+    res.status(200).json({ message: `PO with nomorPO ${nomorPO} updated to 'sending'.`, po });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { createItem, getAllItems, getItemById, updateItem, deleteItem, updateQuantity, updatePOStatusToSending };

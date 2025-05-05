@@ -31,6 +31,7 @@
 - **GET** `api/po/status/pending` : to get PO that the status is pending
 - **GET** `api/po/status/sending` : to get PO that the status is sending
 - **GET** `api/po/status/delivered` : to get PO that the status is delivered
+- **PUT** `api/po/update-status/sending/:nomorPO` : to edit status po from pening to sending
 
 ## Endpoint untuk Surat Jalan
 

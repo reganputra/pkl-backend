@@ -16,16 +16,35 @@ const getRandomItem = async () => {
 // Fungsi untuk membuat PO baru secara otomatis
 const createAutoPO = async (req, res) => {
   try {
+    // Generate nomor PO secara acak
     const nomorPO = generateNomorPO();
-    const item = await getRandomItem();
-    const quantity = Math.floor(Math.random() * 100) + 1; // Kuantitas acak antara 1 dan 100
-    const status = "pending";
 
+    // Ambil item secara acak dari database
+    const item = await getRandomItem();
     if (!item) return res.status(404).json({ message: "No items found in the database" });
 
-    const newPO = new PO({ nomorPO, barang: item._id, quantity, status });
+    // Generate kuantitas secara acak
+    const quantity = Math.floor(Math.random() * 901) + 100; // Kuantitas acak antara 1 dan 100
+
+    // Status default untuk PO baru
+    const status = "pending";
+
+    // Buat dokumen PO baru
+    const newPO = new PO({
+      nomorPO,
+      itemName: item.name,
+      itemKodeBarang: item.kodeBarang,
+      itemCategory: item.category,
+      itemImage: item.image,
+      itemUkuranKemasan: item.ukuranKemasan,
+      quantity,
+      status,
+    });
+
+    // Simpan PO ke database
     await newPO.save();
 
+    // Kembalikan respons dengan data PO yang baru dibuat
     res.status(201).json(newPO);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,8 +54,20 @@ const createAutoPO = async (req, res) => {
 // Fungsi untuk mendapatkan semua PO
 const getAllPOs = async (req, res) => {
   try {
-    const pos = await PO.find().populate("barang");
-    res.status(200).json(pos);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const pos = await PO.find().skip(skip).limit(limit);
+
+    const total = await PO.countDocuments();
+
+    res.status(200).json({
+      data: pos,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -59,18 +90,24 @@ const getPOById = async (req, res) => {
 const updatePO = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nomorPO, barang, quantity, status } = req.body;
+    const { nomorPO, itemName, itemKodeBarang, itemCategory, itemImage, itemUkuranKemasan, quantity, status } = req.body;
 
     const po = await PO.findById(id);
     if (!po) return res.status(404).json({ message: "PO not found" });
 
     if (nomorPO) po.nomorPO = nomorPO;
-    if (barang) po.barang = barang;
+    if (itemName) po.itemName = itemName;
+    if (itemKodeBarang) po.itemKodeBarang = itemKodeBarang;
+    if (itemCategory) po.itemCategory = itemCategory;
+    if (itemImage) po.itemImage = itemImage;
+    if (itemUkuranKemasan) po.itemUkuranKemasan = itemUkuranKemasan;
     if (quantity) po.quantity = quantity;
     if (status) po.status = status;
 
+    // Simpan perubahan ke database
     await po.save();
 
+    // Kembalikan respons dengan data PO yang diperbarui
     res.status(200).json(po);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -90,28 +127,26 @@ const deletePO = async (req, res) => {
   }
 };
 
-// Fungsi untuk mengupdate status PO menjadi "sending" jika sudah H+1 dari waktu PO dibuat
-const updatePOStatusToSending = async () => {
+// Fungsi untuk langsung mengupdate semua status PO yang "pending" menjadi "sending"
+// Fungsi untuk mengupdate status PO menjadi "sending" berdasarkan nomorPO
+const updatePOStatusToSending = async (req, res) => {
   try {
-    const currentDate = new Date(); // Tanggal saat ini
-
-    // Cari semua PO dengan status "pending"
-    const pendingPOs = await PO.find({ status: "pending" });
-
-    // Iterasi setiap PO untuk memeriksa apakah sudah H+1
-    for (const po of pendingPOs) {
-      const poDate = new Date(po.date); // Tanggal PO dibuat
-      const diffInDays = Math.floor((currentDate - poDate) / (1000 * 60 * 60 * 24)); // Selisih hari
-
-      if (diffInDays >= 1) {
-        po.status = "sending"; // Update status menjadi "sending"
-        await po.save(); // Simpan perubahan
-      }
+    const { nomorPO } = req.params; // Ambil nomorPO dari parameter URL
+    console.log("nomorPO : ", nomorPO);
+    // Cari PO berdasarkan nomorPO
+    const po = await PO.findOne({ nomorPO });
+    console.log("po : ", po);
+    if (!po) {
+      return res.status(404).json({ message: "PO not found" });
     }
 
-    console.log("PO statuses updated to 'sending' where applicable.");
+    // Perbarui status PO menjadi "sending"
+    po.status = "sending";
+    await po.save();
+
+    res.status(200).json({ message: `PO with nomorPO ${nomorPO} updated to 'sending'.`, po });
   } catch (error) {
-    console.error("Error updating PO statuses:", error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 

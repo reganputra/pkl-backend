@@ -6,7 +6,7 @@ import authMiddleware from "../middlewares/authMiddleware.mjs";
 router.post("/", authMiddleware, createAutoPO);
 router.get("/", authMiddleware, getAllPOs);
 router.get("/:id", authMiddleware, getPOById);
-router.put("/:id", authMiddleware, updatePO);
+router.put("/update-status/sending/:nomorPO", authMiddleware, updatePOStatusToSending);
 router.delete("/:id", authMiddleware, deletePO);
 router.get("/status/pending", authMiddleware, getPendingPOs);
 router.get("/status/sending", authMiddleware, getSendingPOs);
