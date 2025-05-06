@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
     const newUser = new User({ username, email, password });
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully", data:newUser });
     // Return a 400 response if the user already exists
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ token });
+    res.status(200).json({ "user": user, "token":token });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
