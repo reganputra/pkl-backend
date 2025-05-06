@@ -23,7 +23,7 @@ const itemSchema = new mongoose.Schema({
     required: true,
   },
   ukuranKemasan: {
-    type: String,
+    type: Number,
   },
   date: {
     type: String,
