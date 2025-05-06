@@ -14,7 +14,7 @@ RUN npm install --production
 COPY . .
 
 # Port yang digunakan oleh aplikasi
-EXPOSE 3000
+EXPOSE 8080
 
 # Environment variable untuk Cloud Run
 ENV PORT 8080
