@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 3000
 
 # Environment variable untuk Cloud Run
-ENV PORT 3000
+ENV PORT 8080
 
 # Jalankan aplikasi
 CMD ["node", "index.mjs"]
