@@ -77,7 +77,7 @@ const getAllPOs = async (req, res) => {
 const getPOById = async (req, res) => {
   try {
     const { id } = req.params;
-    const po = await PO.findById(id).populate("barang");
+    const po = await PO.findById(id);
     if (!po) return res.status(404).json({ message: "PO not found" });
 
     res.status(200).json(po);
@@ -137,7 +137,6 @@ const updatePOStatusToSending = async (req, res) => {
     if (!po) {
       return res.status(404).json({ message: "PO not found" });
     }
-
     po.status = "sending";
     await po.save();
 

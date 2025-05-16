@@ -6,6 +6,6 @@ import authMiddleware from "../middlewares/authMiddleware.mjs";
 router.get("/", authMiddleware, suratJalanController.getAllSuratJalan);
 router.get("/:id", authMiddleware, suratJalanController.getSuratJalanById);
 router.post("/", authMiddleware, suratJalanController.createSuratJalan);
-router.delete("/:id", authMiddleware, suratJalanController.deleteSuratJalan);
+//router.delete("/:id", authMiddleware, suratJalanController.deleteSuratJalan);
 
 export default router;

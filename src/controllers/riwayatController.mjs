@@ -28,10 +28,19 @@ const getRiwayatByYearMonth = async (req, res) => {
     // Pastikan year dan month dalam bentuk string
     year = String(year);
     month = String(month).padStart(2, "0");
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
 
-    const riwayat = await Riwayat.find({ year, month });
+    const riwayat = await Riwayat.find({ year, month }).skip(skip).limit(limit);
+    const total = await Riwayat.countDocuments({ year, month });
 
-    res.status(200).json(riwayat);
+    res.status(200).json({
+      data: riwayat,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
