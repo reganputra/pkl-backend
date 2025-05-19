@@ -4,15 +4,13 @@ dotenv.config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI),
-      {
-        database: "manajemen-gudang",
-      };
-    console.log("MongoDB Connected");
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: "manajemen-gudang", // opsi yang benar untuk nama database
+    });
+    console.log("✅ MongoDB Connected");
   } catch (error) {
-    console.error("Database connection error:", error);
+    console.error("❌ Database connection error:", error.message);
     process.exit(1);
   }
 };
-
 export default connectDB;
