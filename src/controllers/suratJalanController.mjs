@@ -1,4 +1,4 @@
-import Surat from "../models/Suratjalan.mjs";
+import Surat from "../models/SuratJalan.mjs"; // Correct with capital J
 import PO from "../models/PO.mjs";
 
 // Fungsi untuk membuat surat jalan baru
