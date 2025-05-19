@@ -8,7 +8,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors('http://localhost:5173/'));
+app.use(cors({
+    origin: 'https://pkl-frontend.vercel.app',
+}));
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
