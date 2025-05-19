@@ -13,8 +13,6 @@ RUN npm install --production
 # Copy application code
 COPY . .
 
-COPY .env .env
-
 
 # Port used by the application
 EXPOSE 8080
