@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./src/config/db.mjs";
 import router from "./src/routes/index.mjs";
 
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 

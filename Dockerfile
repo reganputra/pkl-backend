@@ -19,7 +19,7 @@ EXPOSE 8080
 # Environment variable for Cloud Run
 ENV PORT 8080
 
-# Add healthcheck (if your app has a health endpoint)
+# Uncomment the healthcheck if you need it
 # HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl -f http://localhost:8080/health || exit 1
 
 # Set Node to production mode
