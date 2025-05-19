@@ -22,9 +22,10 @@ app.use("/api", router);
 // Start Server
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
+      app.listen(PORT, '0.0.0.0', () => {
+          console.log(`Server running on port ${PORT}`);
+      });
+
   })
   .catch((error) => {
     console.error(`Error connecting to the database: ${error.message}`);
