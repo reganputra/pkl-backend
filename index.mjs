@@ -8,6 +8,10 @@ import router from "./src/routes/index.mjs";
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+console.log("MONGODB_URI:", process.env.MONGODB_URI);
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("PORT:", process.env.PORT)
+
 // Middleware
 app.use(cors({
     origin: 'https://pkl-frontend.vercel.app',
